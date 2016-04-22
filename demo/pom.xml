@@ -323,12 +323,24 @@
                                                 <includes>
                                                     <include>${project.groupId}:${project.artifactId}</include>
                                                 </includes>
-                                                <outputFileNameMapping>ticket-monster.war</outputFileNameMapping>
+                                                <outputFileNameMapping>standalone/deployments/ticket-monster.war</outputFileNameMapping>
+                                            </dependencySet>
+                                            <dependencySet>
+                                                <includes>
+                                                    <include>${basedir}/src/wf-standalone/standalone.sh</include>
+                                                </includes>
+                                                <outputFileNameMapping>standalone/configuration/standalone.xml</outputFileNameMapping>
+                                            </dependencySet>
+                                            <dependencySet>
+                                                <includes>
+                                                    <include>${basedir}/src/main/wf-standalone/module</include>
+                                                </includes>
+                                                <outputFileNameMapping>modules/org/mysql/main</outputFileNameMapping>
                                             </dependencySet>
                                         </dependencySets>
                                     </inline>
                                     <user>jboss:jboss:jboss</user>
-                                    <basedir>/opt/jboss/wildfly/standalone/deployments</basedir>
+                                    <basedir>/opt/jboss/wildfly/</basedir>
                                 </assembly>
                             </build>
                         </image>
