@@ -109,6 +109,7 @@
         <fabric8.readinessProbe.initialDelaySeconds>5</fabric8.readinessProbe.initialDelaySeconds>
 
         <fabric8.label.group>ticket-monster</fabric8.label.group>
+        <fabric8.label.demo>cqrs</fabric8.label.demo>
         <fabric8.iconRef>wildfly</fabric8.iconRef>
     </properties>
 
@@ -325,19 +326,24 @@
                                                 </includes>
                                                 <outputFileNameMapping>standalone/deployments/ticket-monster.war</outputFileNameMapping>
                                             </dependencySet>
-                                            <dependencySet>
-                                                <includes>
-                                                    <include>${basedir}/src/wf-standalone/standalone.sh</include>
-                                                </includes>
-                                                <outputFileNameMapping>standalone/configuration/standalone.xml</outputFileNameMapping>
-                                            </dependencySet>
-                                            <dependencySet>
-                                                <includes>
-                                                    <include>${basedir}/src/main/wf-standalone/module</include>
-                                                </includes>
-                                                <outputFileNameMapping>modules/org/mysql/main</outputFileNameMapping>
-                                            </dependencySet>
                                         </dependencySets>
+                                        <fileSets>
+                                            <fileSet>
+                                                <directory>src/main/wf-standalone</directory>
+                                                <includes>
+                                                    <include>standalone.xml</include>
+                                                </includes>
+                                                <outputDirectory>standalone/configuration</outputDirectory>
+                                            </fileSet>
+                                            <fileSet>
+                                                <directory>src/main/wf-standalone/module</directory>
+                                                <includes>
+                                                    <include>module.xml</include>
+                                                    <include>mysql-connector-java-5.1.38.jar</include>
+                                                </includes>
+                                                <outputDirectory>modules/org/mysql/main</outputDirectory>
+                                            </fileSet>
+                                        </fileSets>
                                     </inline>
                                     <user>jboss:jboss:jboss</user>
                                     <basedir>/opt/jboss/wildfly/</basedir>
