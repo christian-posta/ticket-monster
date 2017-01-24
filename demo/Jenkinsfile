@@ -1,28 +1,20 @@
-def appName="${APP_NAME}"
+def appName="ticket-monster-full"
 def project=""
 
-node {
-    stage("Initialize") {
-        project = env.PROJECT_NAME
-    }
-}
-
 node("maven") {
-    stage("Checkout") {
-        git url: "${GIT_SOURCE_URL}", branch: "${GIT_SOURCE_REF}"
-    }
-    stage("Build WAR") {
-        sh "mvn clean package -Popenshift"
-        stash name:"war", includes:"target/ROOT.war"
-    }
-}
+    stage 'checkout' 
+    git url: 'https://github.com/christian-posta/ticket-monster.git', branch: 'monolith-master'
 
-node {
-    stage("Build Image") {
-        unstash name:"war"
-        sh "oc start-build ${appName}-docker --from-file=target/ROOT.war --follow -n ${project}"
+    stage 'build-war'
+    dir('demo'){
+        sh "mvn clean package -Pmysql-openshift"
+        stash name:"build-context", includes:"target/openshift/**"
     }
-    stage("Deploy") {
-        openshiftDeploy deploymentConfig: appName, namespace: project
-    }
+
+    stage 'build-docker'
+    unstash name:"build-context"
+    sh "oc start-build ${appName} --from-dir=target/openshift --follow"
+    
+    stage 'deploy'
+    openshiftDeploy deploymentConfig: appName 
 }

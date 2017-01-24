@@ -392,6 +392,30 @@
                 </resources>
                 <plugins>
                     <plugin>
+                        <artifactId>maven-dependency-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>copy</id>
+                                <phase>package</phase>
+                                <goals>
+                                   <goal>copy</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>          
+                            <outputDirectory>${project.build.directory}/openshift/deployments</outputDirectory>
+                            <artifactItems>
+                                <artifactItem>
+                                <groupId>${project.groupId}</groupId>
+                                <artifactId>${project.artifactId}</artifactId>
+                                <version>${project.version}</version>
+                                <type>${project.packaging}</type>
+                                <destFileName>ROOT.war</destFileName>
+                                </artifactItem>
+                            </artifactItems>
+                        </configuration>
+                    </plugin>
+                    <plugin>
                         <artifactId>maven-surefire-plugin</artifactId>
                         <version>${version.surefire.plugin}</version>
                         <configuration>
